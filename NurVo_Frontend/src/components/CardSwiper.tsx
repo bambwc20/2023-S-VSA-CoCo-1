@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import {useRef, useEffect, useState} from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
 import StudyCard from './StudyCard';
 
 interface CardSwiperProps {
@@ -16,7 +16,13 @@ interface CardSwiperProps {
   alertOpen: (value: boolean) => void;
 }
 
-const CardSwiper = ({ data, action, pageWidth, nextaction, alertOpen }: CardSwiperProps) => {
+const CardSwiper = ({
+  data,
+  action,
+  pageWidth,
+  nextaction,
+  alertOpen,
+}: CardSwiperProps) => {
   const [first, setFirst] = useState(true);
   const [prescount, setPresCount] = useState(0);
   const [dataArray, setDataArray] = useState(data);
@@ -43,10 +49,10 @@ const CardSwiper = ({ data, action, pageWidth, nextaction, alertOpen }: CardSwip
 
   useEffect(() => {
     if (prescount < dataArray.length) {
-      if (prescount === 0 && first || dataArray.length === 0) {
+      if ((prescount === 0 && first) || dataArray.length === 0) {
         setFirst(false);
       } else {
-        flatListRef.current?.scrollToIndex({ animated: true, index: prescount });
+        flatListRef.current?.scrollToIndex({animated: true, index: prescount});
       }
     } else {
       if (nextDataArray.length !== 0) {
@@ -59,12 +65,12 @@ const CardSwiper = ({ data, action, pageWidth, nextaction, alertOpen }: CardSwip
     }
   }, [prescount]);
 
-  const renderItem = ({ item }: { item: any }) => (
+  const renderItem = ({item}: {item: any}) => (
     <View>
       <StudyCard
         id={item.index}
         item={item}
-        style={{ width: pageWidth }}
+        style={{width: pageWidth}}
         isAction={action}
       />
     </View>
@@ -76,7 +82,7 @@ const CardSwiper = ({ data, action, pageWidth, nextaction, alertOpen }: CardSwip
         ref={flatListRef}
         data={dataArray}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         horizontal={true}
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}

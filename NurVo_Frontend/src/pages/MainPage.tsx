@@ -1,49 +1,50 @@
-import { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import {useState} from 'react';
+import {View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
 import Colors from '../utilities/Color';
-import { Body011, Title01 } from '../utilities/Fonts';
-import { screenWidth } from '../utilities/Layout';
+import {Body011, Title01} from '../utilities/Fonts';
+import {screenWidth} from '../utilities/Layout';
 
 import logo from '../assets/images/logo2.png';
 
-const MainPage = ({ navigation }: { navigation: any }) => {
-
+const MainPage = ({navigation}: {navigation: any}) => {
   const goLogin = () => {
     navigation.navigate('Login');
-  }
+  };
 
   const goSignUp = () => {
     navigation.navigate('SignUp');
-  }
+  };
 
   return (
     <View style={styles.container}>
-
       <View style={styles.textContainer}>
         <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Title01 text='NUR' color={Colors.MAINGREEN} />
-          <Title01 text='se ' color={Colors.BLACK} />
-          <Title01 text='VO' color={Colors.MAINGREEN} />
-          <Title01 text='ice' color={Colors.BLACK} />
+          <Title01 text="NUR" color={Colors.MAINGREEN} />
+          <Title01 text="se " color={Colors.BLACK} />
+          <Title01 text="VO" color={Colors.MAINGREEN} />
+          <Title01 text="ice" color={Colors.BLACK} />
         </View>
-        <Body011 text='간호 실무 영어 회화 어플' color={Colors.BLACK} />
+        <Body011 text="간호 실무 영어 회화 어플" color={Colors.BLACK} />
       </View>
 
       <Image source={logo} />
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.btn, styles.loginBtn]} onPress={goLogin}>
-          <Body011 text='로그인' color={Colors.WHITE}/>
+        <TouchableOpacity
+          style={[styles.btn, styles.loginBtn]}
+          onPress={goLogin}>
+          <Body011 text="로그인" color={Colors.WHITE} />
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.btn, styles.signUpBtn]} onPress={goSignUp}>
-          <Body011 text='회원가입' color={Colors.BLACK} />
+        <TouchableOpacity
+          style={[styles.btn, styles.signUpBtn]}
+          onPress={goSignUp}>
+          <Body011 text="회원가입" color={Colors.BLACK} />
         </TouchableOpacity>
       </View>
-
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

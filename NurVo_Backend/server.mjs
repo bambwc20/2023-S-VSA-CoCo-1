@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import logger from "morgan";
 import { router as dialoguesRouter } from "./controllers/dialogues.mjs";
 import { router as bookmarkRouter } from "./controllers/bookmark.mjs";
 import { router as signupRouter } from "./controllers/signup.mjs";
@@ -11,6 +12,7 @@ import passport from "./services/auth.mjs";
 
 const app = express();
 app.use(bodyParser.json());
+app.use(logger("common"));
 cors({ credentials: true, origin: true });
 app.use(cors());
 

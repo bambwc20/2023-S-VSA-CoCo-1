@@ -1,14 +1,11 @@
-import {
-  SectionList, View,
-} from 'react-native';
-import { useEffect, useState } from 'react';
-import { ListCell } from '../components/ListCellComp';
-import { Subtitle011 } from '../utilities/Fonts';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { stopSpeech } from '../utilities/TextToSpeech';
-import { LessonListProps } from '../utilities/NavigationTypes';
-import { fetchAllTopic } from '../utilities/ServerFunc';
-
+import {SectionList, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {ListCell} from '../components/ListCellComp';
+import {Subtitle011} from '../utilities/Fonts';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {stopSpeech} from '../utilities/TextToSpeech';
+import {LessonListProps} from '../utilities/NavigationTypes';
+import {fetchAllTopic} from '../utilities/ServerFunc';
 
 interface Topic {
   id: number;
@@ -36,8 +33,7 @@ export interface ResponseProps {
   data: string;
 }
 
-export default function LessonsList({ navigation, route }: LessonListProps) {
-
+export default function LessonsList({navigation, route}: LessonListProps) {
   const [sections, setSections] = useState<Section[]>([]);
   const [listData, setListData] = useState<ListData[]>([]);
 
@@ -47,7 +43,7 @@ export default function LessonsList({ navigation, route }: LessonListProps) {
 
   useEffect(() => {
     if (route.params && route.params.chapters !== undefined) {
-      setListData([{ title: '', data: route.params.chapters }]);
+      setListData([{title: '', data: route.params.chapters}]);
     } else {
       const getData = async () => {
         try {
@@ -60,22 +56,21 @@ export default function LessonsList({ navigation, route }: LessonListProps) {
               name: chapter.name,
               description: chapter.description,
               topic_id: item.topic.id,
-              step: chapter.step
-            }))
+              step: chapter.step,
+            })),
           }));
           setSections(sectionData);
-
         } catch (error) {
           console.log(error);
         }
-      }
+      };
       getData();
     }
   }, []);
 
   useEffect(() => {
     if (route.params && route.params.title) {
-      navigation.setOptions({ title: route.params.title });
+      navigation.setOptions({title: route.params.title});
     }
   }, []);
 
@@ -83,25 +78,38 @@ export default function LessonsList({ navigation, route }: LessonListProps) {
     if (sections.length === 0) return;
     const listValue = sections.map((section: Section) => ({
       title: section.topic.name,
-      data: section.chapter
+      data: section.chapter,
     }));
     setListData(listValue);
   }, [sections]);
 
   return (
     <>
-      {listData && (<SectionList
-        sections={listData}
-        keyExtractor={(item, index) => item.id.toString()}
-        renderItem={({ item }) => ListCell({ item: item, style: { marginBottom: 16, marginHorizontal: 20 } })}
-        renderSectionHeader={({ section: { title } }) => (
-          <>
-            {(title !== '') && ( <Subtitle011 text={title} style={{ paddingBottom: 12, marginHorizontal: 20 }} color={Colors.BLACK} /> )}
-          </>
-        )}
-        style={{ paddingTop: 16}}
-        ListFooterComponent={<View style={{marginBottom: 30}}/>}
-      />)}
+      {listData && (
+        <SectionList
+          sections={listData}
+          keyExtractor={(item, index) => item.id.toString()}
+          renderItem={({item}) =>
+            ListCell({
+              item: item,
+              style: {marginBottom: 16, marginHorizontal: 20},
+            })
+          }
+          renderSectionHeader={({section: {title}}) => (
+            <>
+              {title !== '' && (
+                <Subtitle011
+                  text={title}
+                  style={{paddingBottom: 12, marginHorizontal: 20}}
+                  color={Colors.BLACK}
+                />
+              )}
+            </>
+          )}
+          style={{paddingTop: 16}}
+          ListFooterComponent={<View style={{marginBottom: 30}} />}
+        />
+      )}
     </>
-  )
+  );
 }

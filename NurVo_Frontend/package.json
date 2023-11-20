@@ -3,11 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "lint": "eslint .",
+    "android": "yarn react-native run-android",
+    "ios": "yarn react-native run-ios",
+    "ios:device": "react-native run-ios --device",
+    "android:release": "react-native run-android --variant=release",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "android:clear": "cd android && ./gradlew clean",
+    "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
+    "android:apk": "yarn run android:bundle && cd android && ./gradlew clean && ./gradlew assembleRelease && cd ..",
+    "android:aab": "yarn run android:bundle && cd android && ./gradlew clean && ./gradlew bundleRelease && cd ..",
+    "reset": "watchman watch-del-all; rm -rf /tmp/metro-bundler-cache-*; rm -rf ./android/build; rm -rf ./android/.gradle; rm -rf ./android/app/build; rm -rf ~/Library/Developer/Xcode/DerivedData; rm -rf /tmp/haste-map-react-native-packager-*; rm -rf ./ios/build; jest --clearCache; cd ios; arch -x86_64 pod install --repo-update; cd ..; npx jetify; cd android; ./gradlew clean; cd ..; react-native start --reset-cache"
   },
   "dependencies": {
     "@google-cloud/text-to-speech": "^4.2.3",

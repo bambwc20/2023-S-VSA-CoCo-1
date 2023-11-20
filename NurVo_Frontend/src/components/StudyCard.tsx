@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Colors from '../utilities/Color';
-import { Title01, Title02 } from '../utilities/Fonts';
-import { speech, stopSpeech } from "../utilities/TextToSpeech";
-import { screenHeight } from '../utilities/Layout';
+import {Title01, Title02} from '../utilities/Fonts';
+import {speech, stopSpeech} from '../utilities/TextToSpeech';
+import {screenHeight} from '../utilities/Layout';
 
 interface StudyCardProps {
   id: number;
@@ -21,20 +21,22 @@ interface StudyCardProps {
 }
 
 // React.forwardRef로 감싼 StudyCard 컴포넌트를 정의합니다.
-const StudyCard = ({ id, item, style, isAction }: StudyCardProps) => {
+const StudyCard = ({id, item, style, isAction}: StudyCardProps) => {
   const [cardTurn, setCardTurn] = useState(false); // 카드 뒤집기
   const [isSpeaking, setIsSpeaking] = useState(false); // tts 동작
 
   const turnCard = () => {
     setCardTurn(prev => !prev);
-  }
+  };
 
   const handleSpeak = async () => {
     if (!isSpeaking) {
       setIsSpeaking(true);
-      speech(item.dialogue, item.conversation_id, true, () => { setIsSpeaking(false) });
+      speech(item.dialogue, item.conversation_id, true, () => {
+        setIsSpeaking(false);
+      });
     }
-  }
+  };
 
   useEffect(() => {
     if (isAction === 'remove' || isAction === 'keep') {
@@ -45,11 +47,18 @@ const StudyCard = ({ id, item, style, isAction }: StudyCardProps) => {
 
   return (
     <TouchableOpacity onPress={turnCard} style={styles.container}>
-
-
       {!cardTurn ? (
-        <View style={[styles.textCard, style, cardTurn ? styles.turnTextCard : null]}>
-          <Title02 text={item.dialogue} color={Colors.BLACK} style={{ marginHorizontal: 25 }} />
+        <View
+          style={[
+            styles.textCard,
+            style,
+            cardTurn ? styles.turnTextCard : null,
+          ]}>
+          <Title02
+            text={item.dialogue}
+            color={Colors.BLACK}
+            style={{marginHorizontal: 25}}
+          />
           <TouchableOpacity onPress={handleSpeak} style={styles.speaker}>
             <Ionicons
               name={isSpeaking ? 'volume-high' : 'volume-high-outline'}
@@ -58,13 +67,22 @@ const StudyCard = ({ id, item, style, isAction }: StudyCardProps) => {
             />
           </TouchableOpacity>
         </View>
-
       ) : (
+        <View
+          style={[
+            styles.textCard,
+            style,
+            cardTurn ? styles.turnTextCard : null,
+          ]}>
+          <Title02
+            text={item.korean}
+            color={Colors.BLACK}
+            style={{marginHorizontal: 25}}
+          />
 
-        <View style={[styles.textCard, style, cardTurn ? styles.turnTextCard : null]}>
-          <Title02 text={item.korean} color={Colors.BLACK} style={{ marginHorizontal: 25 }} />
-
-          <TouchableOpacity onPress={handleSpeak} style={[styles.speaker, { top: 16, left: 18 }]}>
+          <TouchableOpacity
+            onPress={handleSpeak}
+            style={[styles.speaker, {top: 16, left: 18}]}>
             <Ionicons
               name={isSpeaking ? 'volume-high' : 'volume-high-outline'}
               size={30}
@@ -73,8 +91,7 @@ const StudyCard = ({ id, item, style, isAction }: StudyCardProps) => {
           </TouchableOpacity>
         </View>
       )}
-
-    </TouchableOpacity >
+    </TouchableOpacity>
   );
 };
 
@@ -110,7 +127,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
 });
 

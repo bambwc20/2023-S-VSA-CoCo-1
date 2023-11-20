@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 
 import Colors from '../utilities/Color';
-import { Body011, Subtitle011, Title01, Title02 } from '../utilities/Fonts';
-import { screenHeight } from '../utilities/Layout';
-import { updateUserInfo } from '../utilities/ServerFunc';
+import {Body011, Subtitle011, Title01, Title02} from '../utilities/Fonts';
+import {screenHeight} from '../utilities/Layout';
+import {updateUserInfo} from '../utilities/ServerFunc';
 import Sliders from '../components/Sliders';
 import DateTimePickerModalProps from '../components/DateTimePickerModalProps';
 import CustomAlert from '../components/Alert';
 
-const SetUserGoal = ({ navigation, route }: any) => {
+const SetUserGoal = ({navigation, route}: any) => {
   const goals = route.params.data;
   const prevScreen = route.params?.prevScreen || '';
   const [number, setNumber] = useState(goals.obj);
@@ -21,10 +21,13 @@ const SetUserGoal = ({ navigation, route }: any) => {
   useEffect(() => {
     async function updateUser() {
       try {
-        const stringNumber = "" + number;
-        const ipdateUserInfo = await updateUserInfo({ obj: stringNumber, obj_date: date });
+        const stringNumber = '' + number;
+        const ipdateUserInfo = await updateUserInfo({
+          obj: stringNumber,
+          obj_date: date,
+        });
         if (prevScreen === 'Login') {
-          navigation.navigate('HomeScreen', { data: ipdateUserInfo });
+          navigation.navigate('HomeScreen', {data: ipdateUserInfo});
         } else {
           navigation.pop();
         }
@@ -41,32 +44,31 @@ const SetUserGoal = ({ navigation, route }: any) => {
 
   const handleChangeNumber = (value: number) => {
     setNumber(value);
-  }
+  };
 
   const handleChangeDate = (value: string) => {
     setDate(value);
-  }
+  };
 
   const dataSave = () => {
     setIsSave(true);
-  }
+  };
 
   const modalAction = () => {
     setIsModalAction(true);
-  }
+  };
 
   const handleModalAction = (value: boolean) => {
     setIsModalAction(value);
-  }
+  };
 
   const handleAlertAction = (value: boolean) => {
     setIsAlretAction(value);
-  }
+  };
 
   const handleAlertClose = () => {
     setIsAlretAction(false);
-  }
-
+  };
 
   return (
     <>
@@ -75,7 +77,7 @@ const SetUserGoal = ({ navigation, route }: any) => {
 
         <View style={containerStyles.sliderContainer}>
           <View style={containerStyles.sliderTextContainer}>
-            <Title02 text='Weekly Goal Chapters : ' color={Colors.BLACK} />
+            <Title02 text="Weekly Goal Chapters : " color={Colors.BLACK} />
             <Title02 text={number} color={Colors.MAINGREEN} />
           </View>
 
@@ -84,13 +86,20 @@ const SetUserGoal = ({ navigation, route }: any) => {
             minValue={1}
             maxValue={50}
             step={1}
-            styles={{ marginHorizontal: 10 }}
-            numberOfChapter={handleChangeNumber} />
+            styles={{marginHorizontal: 10}}
+            numberOfChapter={handleChangeNumber}
+          />
         </View>
 
         <View style={containerStyles.dateContainer}>
-          <Title01 text='Target Date' color={Colors.BLACK} style={{ marginVertical: 10 }} />
-          <TouchableOpacity style={containerStyles.dateTextContainer} onPress={modalAction} >
+          <Title01
+            text="Target Date"
+            color={Colors.BLACK}
+            style={{marginVertical: 10}}
+          />
+          <TouchableOpacity
+            style={containerStyles.dateTextContainer}
+            onPress={modalAction}>
             <Title02 text={date} color={Colors.BLACK} />
           </TouchableOpacity>
           <DateTimePickerModalProps
@@ -103,18 +112,18 @@ const SetUserGoal = ({ navigation, route }: any) => {
 
         <View style={containerStyles.buttonContainer}>
           <TouchableOpacity style={buttonStyles.button} onPress={dataSave}>
-            <Subtitle011 text='save' color={Colors.BLACK} />
+            <Subtitle011 text="save" color={Colors.BLACK} />
           </TouchableOpacity>
         </View>
-
       </View>
 
-      {isAlretAction &&
+      {isAlretAction && (
         <CustomAlert
           onConfirm={handleAlertClose}
-          content='목표 일자를 재설정 해주세요'
-          confirmText='확인' />
-      }
+          content="목표 일자를 재설정 해주세요"
+          confirmText="확인"
+        />
+      )}
     </>
   );
 };
@@ -180,7 +189,7 @@ const buttonStyles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOffset: { width: 2, height: 2 },
+        shadowOffset: {width: 2, height: 2},
         shadowOpacity: 0.3,
         shadowRadius: 5,
       },
@@ -192,7 +201,6 @@ const buttonStyles = StyleSheet.create({
 });
 
 export default SetUserGoal;
-
 
 // {/*
 // // const openKeybord = (index: number) => {
@@ -240,7 +248,6 @@ export default SetUserGoal;
 //       caretHidden
 //     />
 //   )}
-
 
 //   </View>
 // </View> */}

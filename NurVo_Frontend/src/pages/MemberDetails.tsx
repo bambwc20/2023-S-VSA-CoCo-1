@@ -1,25 +1,31 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Restart from 'react-native-restart';
 
 import Colors from '../utilities/Color';
-import { Body012 } from '../utilities/Fonts';
-import { screenWidth, screenHeight } from '../utilities/Layout';
-import { fetchMypage } from '../utilities/ServerFunc';
-import { removeUserSession } from '../utilities/EncryptedStorage';
+import {Body012} from '../utilities/Fonts';
+import {screenWidth, screenHeight} from '../utilities/Layout';
+import {fetchMypage} from '../utilities/ServerFunc';
+import {removeUserSession} from '../utilities/EncryptedStorage';
 import MemberDetailCell from '../components/MemberDetailCell';
 import CustomAlert from '../components/Alert';
 
 import img1 from '../assets/images/기본이미지.png';
 import UserContext from '../utilities/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/core';
+import {useFocusEffect} from '@react-navigation/core';
 
-const MenberDetails = ({ navigation, route }) => {
+const MenberDetails = ({navigation, route}) => {
   const [userdata, setUserdate] = useState({});
   const [alertOpen, setAlertOpen] = useState('');
-  const { isLogged, setIsLogged } = useContext(UserContext);
+  const {isLogged, setIsLogged} = useContext(UserContext);
 
   useFocusEffect(
     useCallback(() => {
@@ -33,7 +39,7 @@ const MenberDetails = ({ navigation, route }) => {
         }
       }
       getUserData();
-    }, [])
+    }, []),
   );
 
   useEffect(() => {
@@ -52,22 +58,25 @@ const MenberDetails = ({ navigation, route }) => {
   }, [route.params]);
 
   const openSetUserGoal = () => {
-    navigation.navigate('SetUserGoal', { data: { obj: userdata.obj, obj_date: userdata.obj_date }, prevScreen: 'MemberDetails' });
-  }
+    navigation.navigate('SetUserGoal', {
+      data: {obj: userdata.obj, obj_date: userdata.obj_date},
+      prevScreen: 'MemberDetails',
+    });
+  };
 
   const logoutAction = () => {
     setAlertOpen('logout');
-  }
+  };
 
   const handleCancle = () => {
     setAlertOpen('');
-  }
+  };
 
   const handleNext = () => {
     setAlertOpen('');
     removeUserSession();
     setIsLogged(false);
-  }
+  };
 
   return (
     <>
@@ -78,33 +87,41 @@ const MenberDetails = ({ navigation, route }) => {
           </View>
 
           <TouchableOpacity onPress={openSetUserGoal}>
-            <MemberDetailCell title='시용자 목표 설정' infor={`${userdata.obj} Chapter / Week (${userdata.obj_date})`} isOpenIcon={true} />
+            <MemberDetailCell
+              title="시용자 목표 설정"
+              infor={`${userdata.obj} Chapter / Week (${userdata.obj_date})`}
+              isOpenIcon={true}
+            />
           </TouchableOpacity>
-          <MemberDetailCell title='이름' infor={userdata.name} />
-          <MemberDetailCell title='닉네임' infor={userdata.nickname} />
-          <MemberDetailCell title='아이디(이메일)' infor={userdata.id} />
-          <MemberDetailCell title='휴대폰 번호' infor={userdata.phone_number} />
+          <MemberDetailCell title="이름" infor={userdata.name} />
+          <MemberDetailCell title="닉네임" infor={userdata.nickname} />
+          <MemberDetailCell title="아이디(이메일)" infor={userdata.id} />
+          <MemberDetailCell title="휴대폰 번호" infor={userdata.phone_number} />
 
           <TouchableOpacity style={styles.alertButton} onPress={logoutAction}>
-            <View style={styles.buttonInner} >
-              <Body012 text='로그아웃' color={Colors.GRAY03} />
-              <Ionicons name='chevron-forward-outline' size={14} color={Colors.GRAY05} />
+            <View style={styles.buttonInner}>
+              <Body012 text="로그아웃" color={Colors.GRAY03} />
+              <Ionicons
+                name="chevron-forward-outline"
+                size={14}
+                color={Colors.GRAY05}
+              />
             </View>
           </TouchableOpacity>
-
         </View>
       </ScrollView>
       {alertOpen === 'logout' && (
         <CustomAlert
           onCancle={handleCancle}
           onConfirm={handleNext}
-          content='로그아웃 하시겠습니까?'
-          cancleText='취소'
-          confirmText='확인' />
+          content="로그아웃 하시겠습니까?"
+          cancleText="취소"
+          confirmText="확인"
+        />
       )}
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -137,7 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     marginVertical: 15,
-  }
+  },
 });
 
 export default MenberDetails;

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, {createContext, useState, useContext} from 'react';
 
 interface UserContextType {
   isLogged: boolean;
@@ -10,11 +10,11 @@ const UserContext = createContext<UserContextType>({
   setIsLogged: () => {},
 });
 
-export const UserProvider = ({ children }: any) => {
+export const UserProvider = ({children}: any) => {
   const [isLogged, setIsLogged] = useState(false);
 
   return (
-    <UserContext.Provider value={{ isLogged, setIsLogged }}>
+    <UserContext.Provider value={{isLogged, setIsLogged}}>
       {children}
     </UserContext.Provider>
   );

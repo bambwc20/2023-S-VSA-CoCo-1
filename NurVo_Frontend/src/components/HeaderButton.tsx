@@ -1,23 +1,32 @@
-import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import {useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ImformationAlert from './ImformationAlert';
 import Colors from '../utilities/Color';
-import { date } from 'yup';
+import {date} from 'yup';
 
 interface LibraryHeaderProps {
-  types: string,
+  types: string;
   image?: {
-    src: string,
-    alt: string,
+    src: string;
+    alt: string;
   }[];
-  isDeleteAction?: boolean,
+  isDeleteAction?: boolean;
   ondelete?: (value: boolean) => void;
 }
 
-const HeaderButton = ({ types, image, isDeleteAction, ondelete }: LibraryHeaderProps) => {
+const HeaderButton = ({
+  types,
+  image,
+  isDeleteAction,
+  ondelete,
+}: LibraryHeaderProps) => {
   const type = types;
   const [isDelete, setIsDelete] = useState(false);
 
@@ -28,36 +37,31 @@ const HeaderButton = ({ types, image, isDeleteAction, ondelete }: LibraryHeaderP
   const openDelete = () => {
     setIsDelete(true);
     ondelete(true);
-  }
+  };
 
   const closeDelete = () => {
     setIsDelete(false);
     ondelete(false);
-  }
+  };
 
   return (
     <>
       {type === 'delete' &&
-        (isDelete ?
+        (isDelete ? (
           <TouchableOpacity onPress={closeDelete}>
-            < Ionicons
-              name="close"
-              size={30}
-              color="black"
-            />
-          </TouchableOpacity >
-          :
-          <TouchableOpacity onPress={openDelete}>
-            <Ionicons name='trash-outline' size={25} color={Colors.GRAY07} />
+            <Ionicons name="close" size={30} color="black" />
           </TouchableOpacity>
-        )
-      }
+        ) : (
+          <TouchableOpacity onPress={openDelete}>
+            <Ionicons name="trash-outline" size={25} color={Colors.GRAY07} />
+          </TouchableOpacity>
+        ))}
 
-      {type === 'useInfor' &&
+      {type === 'useInfor' && (
         <TouchableOpacity>
           {image ? <ImformationAlert image={image} /> : null}
         </TouchableOpacity>
-      }
+      )}
     </>
   );
 };

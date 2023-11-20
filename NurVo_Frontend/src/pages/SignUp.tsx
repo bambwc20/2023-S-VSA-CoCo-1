@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, KeyboardAvoidingView, ScrollView, NativeModules } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  NativeModules,
+} from 'react-native';
 import * as yup from 'yup';
 import axios from 'axios';
 
 import Colors from '../utilities/Color';
-import { Body011 } from '../utilities/Fonts';
-import { RN_HOST_URL } from "@env";
+import {Body011} from '../utilities/Fonts';
+import {RN_HOST_URL} from '@env';
 
 import SignUpCell from '../components/SignUpCell';
 import IndentifyModal from '../components/IndentifyModal';
@@ -20,7 +27,7 @@ interface SignUpData {
   nickname: string;
 }
 
-const SignUp = ({ navigation }) => {
+const SignUp = ({navigation}) => {
   const [id, setId] = useState(''); //input으로 입력받고 여기에 저장한 뒤 백엔드로 보내주는 값들
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -35,7 +42,7 @@ const SignUp = ({ navigation }) => {
   const [isAlretAction, setIsAlretAction] = useState(false); // 회원가입 가능 여부 확인 Alert창
   const [alretMessages, setAlretMessages] = useState(''); // Alert창에 들어갈 메세지
 
-  const { StatusBarManager } = NativeModules;
+  const {StatusBarManager} = NativeModules;
 
   // 유효성 검사를 위한 스키마 정의
   const validationSchema = yup.object().shape({
@@ -45,12 +52,12 @@ const SignUp = ({ navigation }) => {
       .min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
       .matches(
         /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-        '비밀번호는 영어 소문자, 숫자, 특수 기호를 모두 포함해야 합니다.'
+        '비밀번호는 영어 소문자, 숫자, 특수 기호를 모두 포함해야 합니다.',
       )
       .required('비밀번호를 입력해주세요.'),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref('password'), ""], '비밀번호가 일치하지 않습니다.')
+      .oneOf([yup.ref('password'), ''], '비밀번호가 일치하지 않습니다.')
       .required('비밀번호를 다시 입력해주세요.'),
     name: yup.string().required('이름을 입력해주세요.'),
     phone_number: yup.string().required('전화번호를 입력해주세요.'),
@@ -65,9 +72,12 @@ const SignUp = ({ navigation }) => {
     } else {
       const checkIdData = {
         id,
-      }
+      };
       try {
-        const result = await axios.post(`${RN_HOST_URL}/api/signup/id`, checkIdData);
+        const result = await axios.post(
+          `${RN_HOST_URL}/api/signup/id`,
+          checkIdData,
+        );
         if (result.data.message === '사용 가능한 아이디입니다.') {
           setCheckId(true);
           setAlretMessages(result.data.message);
@@ -79,22 +89,25 @@ const SignUp = ({ navigation }) => {
         }
       } catch (e) {
         console.log(e);
-      };
+      }
     }
-  }
+  };
 
   //전화번호 인증을 위한 인증번호
   const handleCheckIdentify = async () => {
     const identifyData = {
       phone_number,
-    }
+    };
     try {
-      const result = await axios.post(`${RN_HOST_URL}/api/signup/identify`, identifyData);
+      const result = await axios.post(
+        `${RN_HOST_URL}/api/signup/identify`,
+        identifyData,
+      );
       setIdentifyNumber(result.data.Number);
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   //사용자가 인증번호 입력했을 때의 함수
   const handleCheckIdentifyNumber = () => {
@@ -104,7 +117,7 @@ const SignUp = ({ navigation }) => {
         setIdentify(true);
       }
     }
-  }
+  };
 
   //회원가입 폼 제출할 때의 함수
   const handleSignUp = async () => {
@@ -118,7 +131,7 @@ const SignUp = ({ navigation }) => {
     };
 
     try {
-      await validationSchema.validate(signUpData, { abortEarly: false });
+      await validationSchema.validate(signUpData, {abortEarly: false});
       // 유효성 검사를 통과한 경우, 회원가입 처리 로직을 실행합니다.
       const result = await axios.post(`${RN_HOST_URL}/api/signup`, signUpData);
       if (result.data.message === '회원가입 성공') {
@@ -146,20 +159,21 @@ const SignUp = ({ navigation }) => {
       console.log(value);
       handleCheckIdentifyNumber();
     }
-  }
+  };
 
   const handleAlertClose = () => {
     setIsAlretAction(false);
-  }
+  };
 
   return (
     <>
       <KeyboardAvoidingView
         style={[styles.container]}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? StatusBarManager.HEIGHT + 44 : undefined}>
+        keyboardVerticalOffset={
+          Platform.OS === 'ios' ? StatusBarManager.HEIGHT + 44 : undefined
+        }>
         <ScrollView>
-
           <SignUpCell
             title="아이디"
             initialText="아이디"
@@ -169,13 +183,13 @@ const SignUp = ({ navigation }) => {
             onClickAction={onClick}
             isButtonDisable={checkId}
             isFocused={true}
-            style={{ marginTop: 60 }}
+            style={{marginTop: 60}}
           />
           <SignUpCell
             title="비밀번호"
             initialText="비밀번호"
             onText={value => setPassword(value)}
-            subText='영어 소문자, 숫자, 특수 기호(!@#$%^&*)을 포함한 8자 이상'
+            subText="영어 소문자, 숫자, 특수 기호(!@#$%^&*)을 포함한 8자 이상"
             isFocused={false}
           />
           <SignUpCell
@@ -195,7 +209,7 @@ const SignUp = ({ navigation }) => {
             initialText="'-' 구분없이 입력"
             isConfirmButton={true}
             buttonText="인증번호 전송"
-            onText={(value) => setPhoneNumber(value)}
+            onText={value => setPhoneNumber(value)}
             onClickAction={onClick}
             isButtonDisable={identify}
             isFocused={false}
@@ -206,8 +220,14 @@ const SignUp = ({ navigation }) => {
             onText={value => setNickname(value)}
             isFocused={false}
           />
-          <TouchableOpacity style={[styles.buttonContainer, { marginTop: 70 }]} onPress={handleSignUp}>
-            <Body011 text='NurVo 시작하기' color={Colors.WHITE} style={{ textAlign: 'center' }} />
+          <TouchableOpacity
+            style={[styles.buttonContainer, {marginTop: 70}]}
+            onPress={handleSignUp}>
+            <Body011
+              text="NurVo 시작하기"
+              color={Colors.WHITE}
+              style={{textAlign: 'center'}}
+            />
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -219,12 +239,13 @@ const SignUp = ({ navigation }) => {
         isIndenify={identify}
       />
 
-      {isAlretAction &&
+      {isAlretAction && (
         <CustomAlert
           onConfirm={handleAlertClose}
           content={alretMessages}
-          confirmText='확인' />
-      }
+          confirmText="확인"
+        />
+      )}
     </>
   );
 };
@@ -241,6 +262,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: Colors.MAINGREEN,
   },
-})
+});
 
 export default SignUp;
